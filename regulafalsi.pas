@@ -12,6 +12,9 @@ type
       class function FindRoot(f: string):double; override;
   end;
 
+var
+  default_tolerance_limit : Double;
+
 implementation
 
 class function TRegulaFalsi.FindRoot(f: string): Double;

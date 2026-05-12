@@ -1,37 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2026/05/12 11:39:54.046,=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 11:40:15.302,C:\Users\User\Documents\Uni\MN\kelompok1\main.pas=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 11:40:15.302,C:\Users\User\Documents\Uni\MN\kelompok1\main.dfm=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>2026/05/12 11:40:41.158,C:\Users\User\Documents\Uni\MN\kelompok1\rootOfFunctionCalc.dproj=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>2026/05/12 12:21:37.549,=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:21:52.892,C:\Users\User\Documents\Uni\MN\kelompok1\evaluator.pas=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:23:31.417,=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:29:13.388,C:\Users\User\Documents\Uni\MN\kelompok1\newtonrhapson.pas=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:29:29.928,=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:29:39.772,C:\Users\User\Documents\Uni\MN\kelompok1\regulafalsi.pas=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:29:47.437,=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:29:56.540,C:\Users\User\Documents\Uni\MN\kelompok1\bissection.pas=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:30:02.358,=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:30:27.441,C:\Users\User\Documents\Uni\MN\kelompok1\secant.pas=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:38:55.591,=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:39:19.533,C:\Users\User\Documents\Uni\MN\kelompok1\rootmethod.pas=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:46:23.568,=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:46:28.788,C:\Users\User\Documents\Uni\MN\kelompok1\tree.pas=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:51:26.772,=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 12:51:31.310,C:\Users\User\Documents\Uni\MN\kelompok1\stack.pas=C:\Users\User\Documents\Uni\MN\kelompok1\Unit1.pas</Transaction>
+	<Transactions>
+    <Transaction>2026/05/12 11:39:54.000.046,=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/12 11:40:15.000.302,C:\Users\User\Documents\Uni\MN\kelompok1\main.pas=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/12 11:40:15.000.302,C:\Users\User\Documents\Uni\MN\kelompok1\main.dfm=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2026/05/12 11:40:41.000.158,C:\Users\User\Documents\Uni\MN\kelompok1\rootOfFunctionCalc.dproj=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
   </Transactions>
-  <ProjectSortOrder AutoSort="0" SortType="0">
-    <File Path="bissection.pas"/>
-    <File Path="evaluator.pas"/>
-    <File Path="main.pas"/>
-    <File Path="main.dfm"/>
-    <File Path="newtonrhapson.pas"/>
-    <File Path="regulafalsi.pas"/>
-    <File Path="rootmethod.pas"/>
-    <File Path="secant.pas"/>
-    <File Path="tree.pas"/>
-    <File Path="stack.pas"/>
-  </ProjectSortOrder>
 </BorlandProject>

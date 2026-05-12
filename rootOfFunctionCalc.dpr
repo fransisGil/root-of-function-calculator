@@ -2,7 +2,7 @@ program rootOfFunctionCalc;
 
 uses
   Vcl.Forms,
-  main in 'main.pas' {Form1},
+  main in 'main.pas' {Aplikasi},
   evaluator in 'evaluator.pas',
   newtonrhapson in 'newtonrhapson.pas',
   regulafalsi in 'regulafalsi.pas',
@@ -17,6 +17,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TAplikasi, Aplikasi);
   Application.Run;
 end.

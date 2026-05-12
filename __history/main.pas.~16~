@@ -1,0 +1,51 @@
+unit main;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, regulafalsi, bissection, secant, newtonrhapson,
+  Vcl.Grids, Vcl.StdCtrls;
+
+type
+  TAplikasi = class(TForm)
+    StringGrid1: TStringGrid;
+    cmbJenisMetode: TComboBox;
+    edFunction: TEdit;
+    edGallant: TEdit;
+    btnProses: TButton;
+    cmbMetode: TComboBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    gboxSelang: TGroupBox;
+    edtSelangA: TEdit;
+    edtSelangB: TEdit;
+    lblSelangA: TLabel;
+    lblSelangB: TLabel;
+    procedure FormCreate(Sender: TObject);
+
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Aplikasi: TAplikasi;
+
+implementation
+
+{$R *.dfm}
+
+
+
+procedure TAplikasi.FormCreate(Sender: TObject);
+begin
+  cmbJenisMetode.Items.add('Metode Tertutup');
+  cmbJenisMetode.Items.add('Metode Terbuka');
+
+end;
+
+ end.
