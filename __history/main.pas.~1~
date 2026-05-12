@@ -16,7 +16,6 @@ type
 
 var
   Form1: TForm1;
-  apalah: string;
 
 implementation
 
