@@ -127,6 +127,14 @@
             <Form>Form1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="evaluator.pas"/>
+        <DCCReference Include="newtonrhapson.pas"/>
+        <DCCReference Include="regulafalsi.pas"/>
+        <DCCReference Include="bissection.pas"/>
+        <DCCReference Include="secant.pas"/>
+        <DCCReference Include="rootmethod.pas"/>
+        <DCCReference Include="tree.pas"/>
+        <DCCReference Include="stack.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
