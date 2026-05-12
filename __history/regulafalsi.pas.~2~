@@ -1,0 +1,15 @@
+unit regulafalsi;
+
+interface
+
+uses evaluator;
+
+type
+  TRegulaFalsi = class
+    public
+      class function FindRoot(): double;
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,20 @@
+unit regulafalsi;
+
+interface
+
+uses evaluator;
+
+type
+  TRegulaFalsi = class
+    public
+      class function FindRoot(f: string): double;
+  end;
+
+implementation
+
+class function TRegulaFalsi.FindRoot(f: string): Double;
+begin
+  Result := 0;
+end;
+
+end.

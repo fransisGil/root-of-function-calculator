@@ -1,0 +1,19 @@
+unit newtonrhapson;
+
+interface
+
+uses evaluator, rootmethod;
+
+type
+  TNewtonRhapson = class(TRootMethod)
+    private
+
+    public
+
+  end;
+
+implementation
+
+
+
+end.

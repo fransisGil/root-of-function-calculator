@@ -1,0 +1,13 @@
+unit bissection;
+
+interface
+
+type
+  TBissection = class
+    public
+      class function FindRoot(
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,17 @@
+unit secant;
+
+interface
+
+implementation
+
+uses evaluator, rootmethod;
+
+type
+  TSecant = class(TRootMethod)
+    private
+
+    public
+
+  end;
+
+end.

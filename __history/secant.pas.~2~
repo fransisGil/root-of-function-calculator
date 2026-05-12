@@ -1,0 +1,15 @@
+unit secant;
+
+interface
+
+implementation
+
+type
+  TSecant = class
+    private
+
+    public
+
+  end;
+
+end.
