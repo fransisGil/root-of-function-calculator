@@ -11,19 +11,21 @@ object Aplikasi: TAplikasi
   Font.Name = 'Segoe UI'
   Font.Style = [fsBold]
   Menu = MainMenu1
+  OldCreateOrder = True
   Position = poScreenCenter
   OnCreate = FormCreate
+  PixelsPerInch = 96
   TextHeight = 28
   object Label1: TLabel
-    Left = 0
-    Top = 154
+    Left = 8
+    Top = 98
     Width = 134
     Height = 28
     Caption = 'Batas Error    :'
   end
   object Label2: TLabel
-    Left = 0
-    Top = 120
+    Left = 8
+    Top = 64
     Width = 134
     Height = 28
     Caption = 'f(x)                :'
@@ -36,24 +38,24 @@ object Aplikasi: TAplikasi
     TabOrder = 0
   end
   object edtError: TEdit
-    Left = 140
-    Top = 151
+    Left = 148
+    Top = 95
     Width = 385
     Height = 36
     TabOrder = 1
   end
   object cmbFungsi: TComboBox
-    Left = 140
-    Top = 109
+    Left = 148
+    Top = 53
     Width = 385
     Height = 36
     TabOrder = 2
   end
   object GroupBox1: TGroupBox
-    Left = 0
+    Left = 8
     Top = 193
     Width = 241
-    Height = 129
+    Height = 137
     Caption = 'Selang'
     TabOrder = 3
     object Label4: TLabel
@@ -74,7 +76,7 @@ object Aplikasi: TAplikasi
       Left = 50
       Top = 40
       Width = 121
-      Height = 33
+      Height = 36
       TabOrder = 0
     end
     object edtSelangB: TEdit
@@ -84,6 +86,22 @@ object Aplikasi: TAplikasi
       Height = 36
       TabOrder = 1
     end
+  end
+  object btnHitung: TButton
+    Left = 328
+    Top = 256
+    Width = 97
+    Height = 53
+    Caption = 'Hitung'
+    TabOrder = 4
+    OnClick = btnHitungClick
+  end
+  object cmbMetode: TComboBox
+    Left = 148
+    Top = 137
+    Width = 385
+    Height = 36
+    TabOrder = 5
   end
   object MainMenu1: TMainMenu
     OwnerDraw = True
