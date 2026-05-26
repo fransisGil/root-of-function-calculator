@@ -32,7 +32,10 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btnHitungClick(Sender: TObject);
     procedure ertutup1Click(Sender: TObject);
+    procedure cmbMetodeChange(Sender: TObject);
   private
+    procedure ClearGrid;
+    procedure SetupGridForMethod;
     procedure TampilkanHasil(metode, fungsi: string; iterasi: Integer; akar: Double);
     function GetTolerance: Double;
     function GetSelectedFunctionName: string;
@@ -89,6 +92,89 @@ begin
   Result := (GetIntervalA + GetIntervalB) / 2;
 end;
 
+procedure TAplikasi.ClearGrid;
+begin
+  // Hapus semua baris data, sisakan header
+  if StringGrid1.RowCount > 1 then
+    StringGrid1.RowCount := 2; // baris 0 header, baris 1 kosong
+  StringGrid1.FixedRows := 1;
+  // Kosongkan baris data (baris 1)
+  if StringGrid1.ColCount > 0 then
+    StringGrid1.Rows[1].Clear;
+  StringGrid1.Refresh;
+end;
+
+procedure TAplikasi.SetupGridForMethod;
+var
+  metode: string;
+  i: Integer;
+begin
+  metode := cmbMetode.Text;
+  // Atur jumlah kolom dan header
+  if metode = 'Biseksi' then
+  begin
+    StringGrid1.ColCount := 8;
+    StringGrid1.Cells[0,0] := 'Iterasi';
+    StringGrid1.Cells[1,0] := 'A';
+    StringGrid1.Cells[2,0] := 'B';
+    StringGrid1.Cells[3,0] := 'C';
+    StringGrid1.Cells[4,0] := 'f(A)';
+    StringGrid1.Cells[5,0] := 'f(B)';
+    StringGrid1.Cells[6,0] := 'f(C)';
+    StringGrid1.Cells[7,0] := 'Error';
+    for i := 0 to 7 do StringGrid1.ColWidths[i] := 80;
+    StringGrid1.ColWidths[0] := 60;
+  end
+  else if metode = 'Regula Falsi' then
+  begin
+    StringGrid1.ColCount := 8;
+    StringGrid1.Cells[0,0] := 'Iterasi';
+    StringGrid1.Cells[1,0] := 'A';
+    StringGrid1.Cells[2,0] := 'B';
+    StringGrid1.Cells[3,0] := 'C';
+    StringGrid1.Cells[4,0] := 'f(A)';
+    StringGrid1.Cells[5,0] := 'f(B)';
+    StringGrid1.Cells[6,0] := 'f(C)';
+    StringGrid1.Cells[7,0] := 'Error';
+    for i := 0 to 7 do StringGrid1.ColWidths[i] := 80;
+    StringGrid1.ColWidths[0] := 60;
+  end
+  else if metode = 'Secant' then
+  begin
+    StringGrid1.ColCount := 8;
+    StringGrid1.Cells[0,0] := 'Iterasi';
+    StringGrid1.Cells[1,0] := 'X0';
+    StringGrid1.Cells[2,0] := 'X1';
+    StringGrid1.Cells[3,0] := 'X2';
+    StringGrid1.Cells[4,0] := 'f(X0)';
+    StringGrid1.Cells[5,0] := 'f(X1)';
+    StringGrid1.Cells[6,0] := 'f(X2)';
+    StringGrid1.Cells[7,0] := 'Error';
+    for i := 0 to 7 do StringGrid1.ColWidths[i] := 80;
+    StringGrid1.ColWidths[0] := 60;
+  end
+  else if metode = 'Newton Raphson' then
+  begin
+    StringGrid1.ColCount := 6;
+    StringGrid1.Cells[0,0] := 'Iterasi';
+    StringGrid1.Cells[1,0] := 'Xn';
+    StringGrid1.Cells[2,0] := 'f(Xn)';
+    StringGrid1.Cells[3,0] := 'f''(Xn)';
+    StringGrid1.Cells[4,0] := 'Xn+1';
+    StringGrid1.Cells[5,0] := 'Error';
+    StringGrid1.ColWidths[0] := 60;
+    StringGrid1.ColWidths[1] := 80;
+    StringGrid1.ColWidths[2] := 80;
+    StringGrid1.ColWidths[3] := 80;
+    StringGrid1.ColWidths[4] := 80;
+    StringGrid1.ColWidths[5] := 80;
+  end;
+
+  StringGrid1.FixedRows := 1;
+  StringGrid1.RowCount := 2; // baris 0 header, baris 1 kosong (data pertama akan menimpa)
+  StringGrid1.Refresh;
+end;
+
 procedure TAplikasi.FormCreate(Sender: TObject);
 begin
   cmbFungsi.Items.Clear;
@@ -109,38 +195,16 @@ begin
   edtSelangA.Text := '0';
   edtSelangB.Text := '2';
 
-  StringGrid1.ColCount := 5;
-  StringGrid1.FixedRows := 1;
-  StringGrid1.RowCount := 1;
-  StringGrid1.Cells[0, 0] := 'Metode';
-  StringGrid1.Cells[1, 0] := 'Fungsi';
-  StringGrid1.Cells[2, 0] := 'Iterasi';
-  StringGrid1.Cells[3, 0] := 'Akar Pendekatan';
-  StringGrid1.Cells[4, 0] := 'f(Akar)';
+  SetupGridForMethod;
+end;
 
-  StringGrid1.DefaultColWidth := 100;
-  StringGrid1.ColWidths[0] := 130;
-  StringGrid1.ColWidths[1] := 140;
-  StringGrid1.ColWidths[2] := 70;
-  StringGrid1.ColWidths[3] := 170;
-  StringGrid1.ColWidths[4] := 200;
+procedure TAplikasi.cmbMetodeChange(Sender: TObject);
+begin
+  SetupGridForMethod;
 end;
 
 procedure TAplikasi.TampilkanHasil(metode, fungsi: string; iterasi: Integer; akar: Double);
-var
-  row: Integer;
-  nilaiFungsi: Double;
 begin
-  CurrentFunctionIndex := GetFunctionIndex(fungsi);
-  nilaiFungsi := EvaluateFunction(akar);
-  row := StringGrid1.RowCount;
-  StringGrid1.RowCount := row + 1;
-  StringGrid1.Cells[0, row] := metode;
-  StringGrid1.Cells[1, row] := fungsi;
-  StringGrid1.Cells[2, row] := IntToStr(iterasi);
-  StringGrid1.Cells[3, row] := FormatFloat('0.00000000', akar);
-  StringGrid1.Cells[4, row] := FormatFloat('0.00000000', nilaiFungsi);
-  StringGrid1.Refresh;
   ShowMessage(Format('%s - %s selesai. Akar = %.8f (iterasi %d)', [metode, fungsi, akar, iterasi]));
 end;
 
@@ -159,14 +223,17 @@ begin
     if a >= b then
       raise Exception.Create('Nilai A harus lebih kecil dari B');
 
+    // Bersihkan grid dan setup ulang header (biarkan baris 1 kosong)
+    SetupGridForMethod;
+
     case cmbMetode.ItemIndex of
-      0: akar := BiseksiMethod(fungsi, a, b, tol, 100, iterasi);
-      1: akar := RegulaFalsiMethod(fungsi, a, b, tol, 100, iterasi);
-      2: akar := SecantMethod(fungsi, a, b, tol, 100, iterasi);
+      0: akar := BiseksiMethodWithGrid(fungsi, a, b, tol, 100, iterasi, StringGrid1);
+      1: akar := RegulaFalsiMethodWithGrid(fungsi, a, b, tol, 100, iterasi, StringGrid1);
+      2: akar := SecantMethodWithGrid(fungsi, a, b, tol, 100, iterasi, StringGrid1);
       3:
       begin
         tebakan := (a + b) / 2;
-        akar := NewtonRaphsonMethod(fungsi, tebakan, tol, 100, iterasi);
+        akar := NewtonRaphsonMethodWithGrid(fungsi, tebakan, tol, 100, iterasi, StringGrid1);
       end;
     else
       ShowMessage('Pilih metode yang valid');
