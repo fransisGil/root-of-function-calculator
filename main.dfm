@@ -3,7 +3,7 @@ object Aplikasi: TAplikasi
   Top = 0
   Caption = 'Akar Persamaan Non-Linear'
   ClientHeight = 591
-  ClientWidth = 913
+  ClientWidth = 826
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -30,10 +30,17 @@ object Aplikasi: TAplikasi
     Height = 28
     Caption = 'f(x)                :'
   end
+  object Label3: TLabel
+    Left = 8
+    Top = 140
+    Width = 132
+    Height = 28
+    Caption = 'Metode         :'
+  end
   object StringGrid1: TStringGrid
     Left = -8
     Top = 336
-    Width = 889
+    Width = 833
     Height = 245
     TabOrder = 0
   end
@@ -54,59 +61,59 @@ object Aplikasi: TAplikasi
   object GroupBox1: TGroupBox
     Left = 8
     Top = 193
-    Width = 241
+    Width = 314
     Height = 137
     Caption = 'Selang'
     TabOrder = 3
     object Label4: TLabel
       Left = 19
       Top = 40
-      Width = 25
+      Width = 154
       Height = 28
-      Caption = 'A :'
+      Caption = 'Batas bawah (A)'
     end
     object Label5: TLabel
       Left = 19
       Top = 88
-      Width = 24
+      Width = 130
       Height = 28
-      Caption = 'B :'
+      Caption = 'Batas atas (B)'
     end
     object edtSelangA: TEdit
-      Left = 50
+      Left = 179
       Top = 40
       Width = 121
       Height = 36
       TabOrder = 0
     end
     object edtSelangB: TEdit
-      Left = 49
-      Top = 90
-      Width = 124
+      Left = 179
+      Top = 82
+      Width = 121
       Height = 36
       TabOrder = 1
     end
   end
   object btnHitung: TButton
-    Left = 328
-    Top = 256
-    Width = 97
-    Height = 53
+    Left = 408
+    Top = 228
+    Width = 125
+    Height = 81
     Caption = 'Hitung'
     TabOrder = 4
     OnClick = btnHitungClick
   end
   object cmbMetode: TComboBox
-    Left = 148
+    Left = 146
     Top = 137
     Width = 385
     Height = 36
     TabOrder = 5
+    OnChange = cmbMetodeChange
   end
   object MainMenu1: TMainMenu
     OwnerDraw = True
-    Left = 888
-    Top = 65528
+    Left = 800
     object Metode1: TMenuItem
       Break = mbBarBreak
       Caption = 'Metode'

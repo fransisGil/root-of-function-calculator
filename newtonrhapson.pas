@@ -4,24 +4,20 @@ interface
 
 uses Vcl.Grids, evaluator, Math, SysUtils;
 
-function NewtonRaphsonMethodWithGrid(funcName: string; tebakanAwal, toleransi: Double; maxIter: Integer;
+function NewtonRaphsonMethodWithGrid(funcExpr: string; tebakanAwal, toleransi: Double; maxIter: Integer;
   var iterasi: Integer; grid: TStringGrid): Double;
 
 implementation
 
-function Derivative(x: Double): Double;
+function Derivative(const funcExpr: string; x: Double): Double;
+const
+  h = 1e-6;
 begin
-  case CurrentFunctionIndex of
-    0: Result := 2 * x;
-    1: Result := 3 * x * x - 1;
-    2: Result := Exp(x) - 3;
-    3: Result := Cos(x);
-  else
-    Result := 0;
-  end;
+  // Turunan numerik (forward difference)
+  Result := (EvaluateExpression(funcExpr, x + h) - EvaluateExpression(funcExpr, x)) / h;
 end;
 
-function NewtonRaphsonMethodWithGrid(funcName: string; tebakanAwal, toleransi: Double; maxIter: Integer;
+function NewtonRaphsonMethodWithGrid(funcExpr: string; tebakanAwal, toleransi: Double; maxIter: Integer;
   var iterasi: Integer; grid: TStringGrid): Double;
 var
   x, xn, fx, fpx: Double;
@@ -47,29 +43,22 @@ var
   end;
 
 begin
-  CurrentFunctionIndex := GetFunctionIndex(funcName);
-  if CurrentFunctionIndex = -1 then
-    raise Exception.Create('Fungsi tidak dikenal: ' + funcName);
-
   x := tebakanAwal;
   iter := 0;
   repeat
-    fx := EvaluateFunction(x);
-    fpx := Derivative(x);
+    fx := EvaluateExpression(funcExpr, x);
+    fpx := Derivative(funcExpr, x);
     if Abs(fpx) < 1e-12 then
       raise Exception.Create('Turunan mendekati nol, metode Newton gagal');
     xn := x - fx / fpx;
     Inc(iter);
-
     WriteRow(iter, x, fx, fpx, xn, Abs(xn - x));
-
-    if Abs(EvaluateFunction(xn)) < toleransi then
+    if Abs(EvaluateExpression(funcExpr, xn)) < toleransi then
     begin
       iterasi := iter;
       Result := xn;
       Exit;
     end;
-
     x := xn;
     if iter >= maxIter then
       raise Exception.Create('Iterasi maksimum tercapai tanpa konvergensi');

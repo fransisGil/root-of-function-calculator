@@ -2,33 +2,292 @@ unit evaluator;
 
 interface
 
-var
-  CurrentFunctionIndex: Integer;
+uses
+  System.SysUtils, System.Math, System.Character;
 
-function EvaluateFunction(x: Double): Double;
-function GetFunctionIndex(const funcName: string): Integer;
+function EvaluateExpression(const Expr: string; X: Double): Double;
 
 implementation
 
-function EvaluateFunction(x: Double): Double;
+// Konversi string ke double dengan pemisah desimal titik (.)
+function StringToDoubleLocale(const S: string): Double;
+var
+  s2: string;
+  code: Integer;
 begin
-  case CurrentFunctionIndex of
-    0: Result := x * x - 4;
-    1: Result := x * x * x - x - 2;
-    2: Result := Exp(x) - 3 * x;
-    3: Result := Sin(x) - 0.5;
+  s2 := Trim(S);
+  s2 := StringReplace(s2, ',', '.', [rfReplaceAll]);
+  Val(s2, Result, code);
+  if code <> 0 then
+    raise Exception.CreateFmt('Angka tidak valid: %s', [S]);
+end;
+
+type
+  TTokenType = (ttNumber, ttVariable, ttOperator, ttFunction, ttLeftParen, ttRightParen, ttComma, ttEnd);
+
+  TToken = record
+    TokenType: TTokenType;
+    Value: string;
+    Number: Double;
+  end;
+
+  TTokenizer = class
+  private
+    FExpr: string;
+    FPos: Integer;
+    function CurrentChar: Char;
+    procedure NextChar;
+    procedure SkipWhitespace;
+  public
+    constructor Create(const AExpr: string);
+    function GetNextToken: TToken;
+  end;
+
+  TParser = class
+  private
+    FTokenizer: TTokenizer;
+    FCurrentToken: TToken;
+    FX: Double;
+    procedure NextToken;
+    function ParseExpression: Double;
+    function ParseTerm: Double;
+    function ParseFactor: Double;
+    function ParseFunction(const FuncName: string): Double;
+  public
+    constructor Create(const AExpr: string; X: Double);
+    function Evaluate: Double;
+  end;
+
+{ TTokenizer }
+
+constructor TTokenizer.Create(const AExpr: string);
+begin
+  FExpr := AExpr;
+  FPos := 1;
+end;
+
+function TTokenizer.CurrentChar: Char;
+begin
+  if FPos <= Length(FExpr) then
+    Result := FExpr[FPos]
   else
-    Result := 0;
+    Result := #0;
+end;
+
+procedure TTokenizer.NextChar;
+begin
+  Inc(FPos);
+end;
+
+procedure TTokenizer.SkipWhitespace;
+begin
+  while (FPos <= Length(FExpr)) and (CurrentChar = ' ') do
+    NextChar;
+end;
+
+function TTokenizer.GetNextToken: TToken;
+var
+  ch: Char;
+  startPos: Integer;
+  temp: string;
+begin
+  SkipWhitespace;
+  ch := CurrentChar;
+  if ch = #0 then
+  begin
+    Result.TokenType := ttEnd;
+    Exit;
+  end;
+
+  if CharInSet(ch, ['0'..'9', '.']) then
+  begin
+    startPos := FPos;
+    while CharInSet(CurrentChar, ['0'..'9', '.']) do
+      NextChar;
+    temp := Copy(FExpr, startPos, FPos - startPos);
+    Result.TokenType := ttNumber;
+    Result.Value := temp;
+    Result.Number := StringToDoubleLocale(temp);
+    Exit;
+  end;
+
+  if ch = 'x' then
+  begin
+    NextChar;
+    Result.TokenType := ttVariable;
+    Result.Value := 'x';
+    Exit;
+  end;
+
+  if CharInSet(ch, ['+', '-', '*', '/', '^']) then
+  begin
+    NextChar;
+    Result.TokenType := ttOperator;
+    Result.Value := ch;
+    Exit;
+  end;
+
+  if ch = '(' then
+  begin
+    NextChar;
+    Result.TokenType := ttLeftParen;
+    Exit;
+  end;
+
+  if ch = ')' then
+  begin
+    NextChar;
+    Result.TokenType := ttRightParen;
+    Exit;
+  end;
+
+  if ch = ',' then
+  begin
+    NextChar;
+    Result.TokenType := ttComma;
+    Exit;
+  end;
+
+  if CharInSet(ch, ['a'..'z', 'A'..'Z']) then
+  begin
+    startPos := FPos;
+    while CharInSet(CurrentChar, ['a'..'z', 'A'..'Z']) do
+      NextChar;
+    temp := LowerCase(Copy(FExpr, startPos, FPos - startPos));
+    Result.TokenType := ttFunction;
+    Result.Value := temp;
+    Exit;
+  end;
+
+  raise Exception.Create('Karakter tidak dikenal: ' + ch);
+end;
+
+{ TParser }
+
+constructor TParser.Create(const AExpr: string; X: Double);
+begin
+  FTokenizer := TTokenizer.Create(AExpr);
+  FX := X;
+  NextToken;
+end;
+
+procedure TParser.NextToken;
+begin
+  FCurrentToken := FTokenizer.GetNextToken;
+end;
+
+function TParser.ParseExpression: Double;
+var
+  left: Double;
+  op: string;
+begin
+  left := ParseTerm;
+  while (FCurrentToken.TokenType = ttOperator) and ((FCurrentToken.Value = '+') or (FCurrentToken.Value = '-')) do
+  begin
+    op := FCurrentToken.Value;
+    NextToken;
+    if op = '+' then
+      left := left + ParseTerm
+    else
+      left := left - ParseTerm;
+  end;
+  Result := left;
+end;
+
+function TParser.ParseTerm: Double;
+var
+  left: Double;
+  op: string;
+begin
+  left := ParseFactor;
+  while (FCurrentToken.TokenType = ttOperator) and ((FCurrentToken.Value = '*') or (FCurrentToken.Value = '/') or (FCurrentToken.Value = '^')) do
+  begin
+    op := FCurrentToken.Value;
+    NextToken;
+    if op = '*' then
+      left := left * ParseFactor
+    else if op = '/' then
+      left := left / ParseFactor
+    else if op = '^' then
+      left := Power(left, ParseFactor);
+  end;
+  Result := left;
+end;
+
+function TParser.ParseFactor: Double;
+var
+  token: TToken;
+  funcName: string;
+begin
+  token := FCurrentToken;
+  case token.TokenType of
+    ttNumber:
+      begin
+        NextToken;
+        Result := token.Number;
+      end;
+    ttVariable:
+      begin
+        NextToken;
+        Result := FX;
+      end;
+    ttFunction:
+      begin
+        funcName := token.Value;
+        NextToken;
+        if FCurrentToken.TokenType <> ttLeftParen then
+          raise Exception.Create('Expected ( after function');
+        NextToken;
+        Result := ParseFunction(funcName);
+        if FCurrentToken.TokenType <> ttRightParen then
+          raise Exception.Create('Expected ) after function arguments');
+        NextToken;
+      end;
+    ttLeftParen:
+      begin
+        NextToken;
+        Result := ParseExpression;
+        if FCurrentToken.TokenType <> ttRightParen then
+          raise Exception.Create('Missing closing parenthesis');
+        NextToken;
+      end;
+  else
+    raise Exception.Create('Unexpected token');
   end;
 end;
 
-function GetFunctionIndex(const funcName: string): Integer;
+function TParser.ParseFunction(const FuncName: string): Double;
+var
+  arg: Double;
 begin
-  if funcName = 'x^2 - 4' then Result := 0
-  else if funcName = 'x^3 - x - 2' then Result := 1
-  else if funcName = 'e^x - 3x' then Result := 2
-  else if funcName = 'sin(x) - 0.5' then Result := 3
-  else Result := -1;
+  arg := ParseExpression;
+  if FuncName = 'sin' then Result := Sin(arg)
+  else if FuncName = 'cos' then Result := Cos(arg)
+  else if FuncName = 'tan' then Result := Tan(arg)
+  else if FuncName = 'exp' then Result := Exp(arg)
+  else if FuncName = 'ln' then Result := Ln(arg)
+  else if FuncName = 'sqrt' then Result := Sqrt(arg)
+  else if FuncName = 'abs' then Result := Abs(arg)
+  else raise Exception.Create('Fungsi tidak dikenal: ' + FuncName);
+end;
+
+function TParser.Evaluate: Double;
+begin
+  Result := ParseExpression;
+  if FCurrentToken.TokenType <> ttEnd then
+    raise Exception.Create('Extra characters at end of expression');
+end;
+
+function EvaluateExpression(const Expr: string; X: Double): Double;
+var
+  parser: TParser;
+begin
+  parser := TParser.Create(Expr, X);
+  try
+    Result := parser.Evaluate;
+  finally
+    parser.Free;
+  end;
 end;
 
 end.

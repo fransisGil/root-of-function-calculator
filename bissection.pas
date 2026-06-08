@@ -4,12 +4,12 @@ interface
 
 uses Vcl.Grids, evaluator, Math, SysUtils;
 
-function BiseksiMethodWithGrid(funcName: string; a, b, toleransi: Double; maxIter: Integer;
+function BiseksiMethodWithGrid(funcExpr: string; a, b, toleransi: Double; maxIter: Integer;
   var iterasi: Integer; grid: TStringGrid): Double;
 
 implementation
 
-function BiseksiMethodWithGrid(funcName: string; a, b, toleransi: Double; maxIter: Integer;
+function BiseksiMethodWithGrid(funcExpr: string; a, b, toleransi: Double; maxIter: Integer;
   var iterasi: Integer; grid: TStringGrid): Double;
 var
   fa, fb, fc, c: Double;
@@ -37,17 +37,14 @@ var
   end;
 
 begin
-  CurrentFunctionIndex := GetFunctionIndex(funcName);
-  if CurrentFunctionIndex = -1 then
-    raise Exception.Create('Fungsi tidak dikenal: ' + funcName);
-
+  // Pastikan interval benar
   if a > b then
   begin
     c := a; a := b; b := c;
   end;
 
-  fa := EvaluateFunction(a);
-  fb := EvaluateFunction(b);
+  fa := EvaluateExpression(funcExpr, a);
+  fb := EvaluateExpression(funcExpr, b);
 
   if Abs(fa) < toleransi then
   begin
@@ -70,18 +67,15 @@ begin
   iter := 0;
   repeat
     c := (a + b) / 2;
-    fc := EvaluateFunction(c);
+    fc := EvaluateExpression(funcExpr, c);
     Inc(iter);
-
     WriteRow(iter, a, b, c, fa, fb, fc, (b - a) / 2);
-
     if (Abs(fc) < toleransi) or ((b - a) / 2 < toleransi) then
     begin
       iterasi := iter;
       Result := c;
       Exit;
     end;
-
     if fa * fc < 0 then
     begin
       b := c;
@@ -92,7 +86,6 @@ begin
       a := c;
       fa := fc;
     end;
-
     if iter >= maxIter then
       raise Exception.Create('Iterasi maksimum tercapai tanpa konvergensi');
   until False;
