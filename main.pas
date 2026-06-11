@@ -5,19 +5,12 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Menus,
-  evaluator, bissection, regulafalsi, secant, newtonrhapson;
+  evaluator, bissection, regulafalsi, secant, newtonrhapson, System.Actions,
+  Vcl.ActnList;
 
 type
   TAplikasi = class(TForm)
     StringGrid1: TStringGrid;
-    MainMenu1: TMainMenu;
-    Metode1: TMenuItem;
-    Metode2: TMenuItem;
-    ertutup1: TMenuItem;
-    NewtonRaphson1: TMenuItem;
-    NewtonRaphson2: TMenuItem;
-    Bisection1: TMenuItem;
-    Bisection2: TMenuItem;
     Label1: TLabel;
     Label2: TLabel;
     edtError: TEdit;

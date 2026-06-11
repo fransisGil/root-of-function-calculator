@@ -2,7 +2,7 @@ object Aplikasi: TAplikasi
   Left = 0
   Top = 0
   Caption = 'Akar Persamaan Non-Linear'
-  ClientHeight = 659
+  ClientHeight = 679
   ClientWidth = 939
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,7 +10,6 @@ object Aplikasi: TAplikasi
   Font.Height = -20
   Font.Name = 'Segoe UI'
   Font.Style = [fsBold]
-  Menu = MainMenu1
   OldCreateOrder = True
   Position = poDesigned
   OnCreate = FormCreate
@@ -39,14 +38,12 @@ object Aplikasi: TAplikasi
   end
   object StringGrid1: TStringGrid
     Left = 0
-    Top = 354
+    Top = 374
     Width = 939
     Height = 305
     Align = alBottom
     TabOrder = 0
-    ExplicitLeft = -8
-    ExplicitTop = 336
-    ExplicitWidth = 905
+    ExplicitTop = 354
   end
   object edtError: TEdit
     Left = 148
@@ -114,31 +111,5 @@ object Aplikasi: TAplikasi
     Height = 36
     TabOrder = 5
     OnChange = cmbMetodeChange
-  end
-  object MainMenu1: TMainMenu
-    OwnerDraw = True
-    Left = 800
-    object Metode1: TMenuItem
-      Break = mbBarBreak
-      Caption = 'Metode'
-      object Metode2: TMenuItem
-        Caption = 'Terbuka'
-        object NewtonRaphson1: TMenuItem
-          Caption = 'Newton Raphson'
-        end
-        object NewtonRaphson2: TMenuItem
-          Caption = 'Secant'
-        end
-      end
-      object ertutup1: TMenuItem
-        Caption = 'Tertutup'
-        object Bisection1: TMenuItem
-          Caption = 'Bisection'
-        end
-        object Bisection2: TMenuItem
-          Caption = 'Regula Falsi'
-        end
-      end
-    end
   end
 end
