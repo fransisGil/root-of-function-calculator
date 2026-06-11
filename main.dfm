@@ -2,13 +2,8 @@ object Aplikasi: TAplikasi
   Left = 0
   Top = 0
   Caption = 'Akar Persamaan Non-Linear'
-<<<<<<< HEAD
   ClientHeight = 679
   ClientWidth = 939
-=======
-  ClientHeight = 611
-  ClientWidth = 913
->>>>>>> 4e68a6fdac7216a891310795b846836ffe543eb6
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -34,20 +29,6 @@ object Aplikasi: TAplikasi
     Height = 28
     Caption = 'f(x)                :'
   end
-<<<<<<< HEAD
-  object Label3: TLabel
-    Left = 8
-    Top = 140
-    Width = 132
-    Height = 28
-    Caption = 'Metode         :'
-  end
-  object StringGrid1: TStringGrid
-    Left = 0
-    Top = 374
-    Width = 939
-    Height = 305
-=======
   object lblMetode: TLabel
     Left = 8
     Top = 16
@@ -60,7 +41,6 @@ object Aplikasi: TAplikasi
     Top = 366
     Width = 913
     Height = 245
->>>>>>> 4e68a6fdac7216a891310795b846836ffe543eb6
     Align = alBottom
     TabOrder = 0
     ExplicitTop = 354
@@ -83,13 +63,8 @@ object Aplikasi: TAplikasi
   object GroupBox1: TGroupBox
     Left = 8
     Top = 193
-<<<<<<< HEAD
-    Width = 361
-    Height = 137
-=======
     Width = 241
     Height = 136
->>>>>>> 4e68a6fdac7216a891310795b846836ffe543eb6
     Caption = 'Selang'
     TabOrder = 3
     object Label4: TLabel
@@ -121,24 +96,6 @@ object Aplikasi: TAplikasi
       TabOrder = 1
     end
   end
-<<<<<<< HEAD
-  object btnHitung: TButton
-    Left = 408
-    Top = 228
-    Width = 125
-    Height = 81
-    Caption = 'Hitung'
-    TabOrder = 4
-    OnClick = btnHitungClick
-  end
-  object cmbMetode: TComboBox
-    Left = 146
-    Top = 137
-    Width = 385
-    Height = 36
-    TabOrder = 5
-    OnChange = cmbMetodeChange
-=======
   object cmbMetode: TComboBox
     Left = 8
     Top = 50
@@ -161,7 +118,6 @@ object Aplikasi: TAplikasi
         Caption = 'Tertutup'
       end
     end
->>>>>>> 4e68a6fdac7216a891310795b846836ffe543eb6
   end
   object ActionList1: TActionList
     Left = 744
