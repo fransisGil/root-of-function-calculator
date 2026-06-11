@@ -2,19 +2,27 @@ unit rootmethod;
 
 interface
 
-uses evaluator;
-
 type
   TRootMethod = class
-    public
-      class function FindRoot(f: string): double; virtual;
+  protected
+    FTolerance: Double;
+    FMaxIter: Integer;
+    FIterations: Integer;
+    FFunctionStr: string;
+  public
+    constructor Create(tol: Double; maxIter: Integer; funcStr: string);
+    function FindRoot: Double; virtual; abstract;
+    property Iterations: Integer read FIterations;
   end;
 
 implementation
 
-class function TRootMethod.FindRoot(f: string): double;
+constructor TRootMethod.Create(tol: Double; maxIter: Integer; funcStr: string);
 begin
-  Result := 0;
+  FTolerance := tol;
+  FMaxIter := maxIter;
+  FFunctionStr := funcStr;
+  FIterations := 0;
 end;
 
 end.

@@ -2,21 +2,66 @@ unit newtonrhapson;
 
 interface
 
-uses evaluator, rootmethod;
+uses Vcl.Grids, evaluator, Math, SysUtils;
 
-type
-  TNewtonRhapson = class(TRootMethod)
-    private
-
-    public
-      class function FindRoot(f: string):double; override;
-  end;
+function NewtonRaphsonMethodWithGrid(funcExpr: string; tebakanAwal, toleransi: Double; maxIter: Integer;
+  var iterasi: Integer; grid: TStringGrid): Double;
 
 implementation
 
-class function TNewtonRhapson.FindRoot(f: string): Double;
+function Derivative(const funcExpr: string; x: Double): Double;
+const
+  h = 1e-6;
 begin
-  Result := 0;
+  Result := (EvaluateExpression(funcExpr, x + h) - EvaluateExpression(funcExpr, x)) / h;
+end;
+
+function NewtonRaphsonMethodWithGrid(funcExpr: string; tebakanAwal, toleransi: Double; maxIter: Integer;
+  var iterasi: Integer; grid: TStringGrid): Double;
+var
+  x, xn, fx, fpx: Double;
+  iter: Integer;
+
+  procedure WriteRow(iterNum: Integer; xnVal, fxn, xnp1, err: Double);
+  var
+    row: Integer;
+  begin
+    if (grid.RowCount = 2) and (iterNum = 1) then
+      row := 1
+    else
+    begin
+      row := grid.RowCount;
+      grid.RowCount := row + 1;
+    end;
+    grid.Cells[0, row] := IntToStr(iterNum);
+    grid.Cells[1, row] := FormatFloat('0.00000000', xnVal);
+    grid.Cells[2, row] := FormatFloat('0.00000000', fxn);
+    grid.Cells[3, row] := FormatFloat('0.00000000', xnp1);
+    grid.Cells[4, row] := FormatFloat('0.00000000', err);
+    grid.Refresh;
+  end;
+
+begin
+  x := tebakanAwal;
+  iter := 0;
+  repeat
+    fx := EvaluateExpression(funcExpr, x);
+    fpx := Derivative(funcExpr, x);
+    if Abs(fpx) < 1e-12 then
+      raise Exception.Create('Turunan mendekati nol, metode Newton gagal');
+    xn := x - fx / fpx;
+    Inc(iter);
+    WriteRow(iter, x, fx, xn, Abs(xn - x));
+    if Abs(EvaluateExpression(funcExpr, xn)) < toleransi then
+    begin
+      iterasi := iter;
+      Result := xn;
+      Exit;
+    end;
+    x := xn;
+    if iter >= maxIter then
+      raise Exception.Create('Iterasi maksimum tercapai tanpa konvergensi');
+  until False;
 end;
 
 end.
