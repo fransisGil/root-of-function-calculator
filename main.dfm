@@ -2,7 +2,7 @@ object Aplikasi: TAplikasi
   Left = 0
   Top = 0
   Caption = 'Akar Persamaan Non-Linear'
-  ClientHeight = 591
+  ClientHeight = 611
   ClientWidth = 913
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -28,11 +28,19 @@ object Aplikasi: TAplikasi
     Height = 28
     Caption = 'f(x)                :'
   end
+  object lblMetode: TLabel
+    Left = 8
+    Top = 16
+    Width = 84
+    Height = 28
+    Caption = 'Metode :'
+  end
   object StringGrid1: TStringGrid
-    Left = -8
-    Top = 336
-    Width = 889
+    Left = 0
+    Top = 366
+    Width = 913
     Height = 245
+    Align = alBottom
     TabOrder = 0
   end
   object edtError: TEdit
@@ -41,6 +49,7 @@ object Aplikasi: TAplikasi
     Width = 385
     Height = 36
     TabOrder = 1
+    OnKeyPress = edtErrorKeyPress
   end
   object cmbFungsi: TComboBox
     Left = 140
@@ -53,7 +62,7 @@ object Aplikasi: TAplikasi
     Left = 0
     Top = 193
     Width = 241
-    Height = 129
+    Height = 136
     Caption = 'Selang'
     TabOrder = 3
     object Label4: TLabel
@@ -74,7 +83,7 @@ object Aplikasi: TAplikasi
       Left = 50
       Top = 40
       Width = 121
-      Height = 33
+      Height = 36
       TabOrder = 0
     end
     object edtSelangB: TEdit
@@ -85,31 +94,39 @@ object Aplikasi: TAplikasi
       TabOrder = 1
     end
   end
+  object cmbMetode: TComboBox
+    Left = 8
+    Top = 50
+    Width = 247
+    Height = 36
+    TabOrder = 4
+  end
   object MainMenu1: TMainMenu
-    OwnerDraw = True
-    Left = 888
-    Top = 65528
+    Left = 744
+    Top = 8
     object Metode1: TMenuItem
-      Break = mbBarBreak
       Caption = 'Metode'
-      object Metode2: TMenuItem
+      object metodeTerbuka: TMenuItem
+        Action = pilihTerbuka
         Caption = 'Terbuka'
-        object NewtonRaphson1: TMenuItem
-          Caption = 'Newton Raphson'
-        end
-        object NewtonRaphson2: TMenuItem
-          Caption = 'Secant'
-        end
+        Default = True
       end
-      object ertutup1: TMenuItem
+      object metodeTertutup: TMenuItem
+        Action = pilihTertutup
         Caption = 'Tertutup'
-        object Bisection1: TMenuItem
-          Caption = 'Bisection'
-        end
-        object Bisection2: TMenuItem
-          Caption = 'Regula Falsi'
-        end
       end
+    end
+  end
+  object ActionList1: TActionList
+    Left = 744
+    Top = 64
+    object pilihTerbuka: TAction
+      Caption = 'pilihTerbuka'
+      OnExecute = pilihTerbukaExecute
+    end
+    object pilihTertutup: TAction
+      Caption = 'pilihTertutup'
+      OnExecute = pilihTertutupExecute
     end
   end
 end
