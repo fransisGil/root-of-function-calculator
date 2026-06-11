@@ -2,8 +2,8 @@ object Aplikasi: TAplikasi
   Left = 0
   Top = 0
   Caption = 'Akar Persamaan Non-Linear'
-  ClientHeight = 591
-  ClientWidth = 826
+  ClientHeight = 659
+  ClientWidth = 939
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,7 +12,7 @@ object Aplikasi: TAplikasi
   Font.Style = [fsBold]
   Menu = MainMenu1
   OldCreateOrder = True
-  Position = poScreenCenter
+  Position = poDesigned
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 28
@@ -38,11 +38,15 @@ object Aplikasi: TAplikasi
     Caption = 'Metode         :'
   end
   object StringGrid1: TStringGrid
-    Left = -8
-    Top = 336
-    Width = 833
-    Height = 245
+    Left = 0
+    Top = 354
+    Width = 939
+    Height = 305
+    Align = alBottom
     TabOrder = 0
+    ExplicitLeft = -8
+    ExplicitTop = 336
+    ExplicitWidth = 905
   end
   object edtError: TEdit
     Left = 148
@@ -61,7 +65,7 @@ object Aplikasi: TAplikasi
   object GroupBox1: TGroupBox
     Left = 8
     Top = 193
-    Width = 314
+    Width = 361
     Height = 137
     Caption = 'Selang'
     TabOrder = 3
@@ -80,14 +84,14 @@ object Aplikasi: TAplikasi
       Caption = 'Batas atas (B)'
     end
     object edtSelangA: TEdit
-      Left = 179
+      Left = 219
       Top = 40
       Width = 121
       Height = 36
       TabOrder = 0
     end
     object edtSelangB: TEdit
-      Left = 179
+      Left = 219
       Top = 82
       Width = 121
       Height = 36

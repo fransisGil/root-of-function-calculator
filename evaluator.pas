@@ -52,7 +52,9 @@ type
     function ParseExpression: Double;
     function ParseTerm: Double;
     function ParseFactor: Double;
-    function ParseFunction(const FuncName: string): Double;
+    function ParsePower: Double;
+    function ParsePrimary: Double;
+    function ParseFunction(const FuncName: string; Arg: Double): Double;
   public
     constructor Create(const AExpr: string; X: Double);
     function Evaluate: Double;
@@ -111,7 +113,7 @@ begin
     Exit;
   end;
 
-  if ch = 'x' then
+  if CharInSet(ch, ['x','X']) then
   begin
     NextChar;
     Result.TokenType := ttVariable;
@@ -182,15 +184,20 @@ var
   op: string;
 begin
   left := ParseTerm;
-  while (FCurrentToken.TokenType = ttOperator) and ((FCurrentToken.Value = '+') or (FCurrentToken.Value = '-')) do
+
+  while (FCurrentToken.TokenType = ttOperator) and
+        ((FCurrentToken.Value = '+') or
+         (FCurrentToken.Value = '-')) do
   begin
     op := FCurrentToken.Value;
     NextToken;
+
     if op = '+' then
       left := left + ParseTerm
     else
       left := left - ParseTerm;
   end;
+
   Result := left;
 end;
 
@@ -200,75 +207,162 @@ var
   op: string;
 begin
   left := ParseFactor;
-  while (FCurrentToken.TokenType = ttOperator) and ((FCurrentToken.Value = '*') or (FCurrentToken.Value = '/') or (FCurrentToken.Value = '^')) do
+
+  while (FCurrentToken.TokenType = ttOperator) and
+        ((FCurrentToken.Value = '*') or
+         (FCurrentToken.Value = '/')) do
   begin
     op := FCurrentToken.Value;
     NextToken;
+
     if op = '*' then
       left := left * ParseFactor
-    else if op = '/' then
-      left := left / ParseFactor
-    else if op = '^' then
-      left := Power(left, ParseFactor);
+    else
+      left := left / ParseFactor;
   end;
+
   Result := left;
 end;
 
 function TParser.ParseFactor: Double;
+begin
+  if (FCurrentToken.TokenType = ttOperator) then
+  begin
+    if FCurrentToken.Value = '+' then
+    begin
+      NextToken;
+      Result := ParseFactor;
+      Exit;
+    end;
+
+    if FCurrentToken.Value = '-' then
+    begin
+      NextToken;
+      Result := -ParseFactor;
+      Exit;
+    end;
+  end;
+
+  Result := ParsePower;
+end;
+
+function TParser.ParsePower: Double;
+var
+  left: Double;
+begin
+  left := ParsePrimary;
+
+  if (FCurrentToken.TokenType = ttOperator)
+     and (FCurrentToken.Value = '^') then
+  begin
+    NextToken;
+
+    Result := Power(left, ParsePower);
+  end
+  else
+    Result := left;
+end;
+
+function TParser.ParsePrimary: Double;
 var
   token: TToken;
   funcName: string;
+  arg: Double;
 begin
   token := FCurrentToken;
+
   case token.TokenType of
+
     ttNumber:
       begin
         NextToken;
         Result := token.Number;
+        if (token.TokenType = ttFunction) and (token.Value = 'e') then
+        begin
+          NextToken;
+          Result := Exp(1);
+          Exit;
+        end;
+
+        if (token.TokenType = ttFunction) and (token.Value = 'pi') then
+        begin
+          NextToken;
+          Result := Pi;
+          Exit;
+        end;
       end;
+
+
+
     ttVariable:
       begin
         NextToken;
         Result := FX;
       end;
+
     ttFunction:
       begin
         funcName := token.Value;
+
         NextToken;
+
         if FCurrentToken.TokenType <> ttLeftParen then
           raise Exception.Create('Expected ( after function');
+
         NextToken;
-        Result := ParseFunction(funcName);
+
+        arg := ParseExpression;
+
         if FCurrentToken.TokenType <> ttRightParen then
           raise Exception.Create('Expected ) after function arguments');
+
         NextToken;
+
+        Result := ParseFunction(funcName, arg);
       end;
+
     ttLeftParen:
       begin
         NextToken;
+
         Result := ParseExpression;
+
         if FCurrentToken.TokenType <> ttRightParen then
           raise Exception.Create('Missing closing parenthesis');
+
         NextToken;
       end;
+
   else
     raise Exception.Create('Unexpected token');
   end;
 end;
 
-function TParser.ParseFunction(const FuncName: string): Double;
-var
-  arg: Double;
+function TParser.ParseFunction(const FuncName: string; Arg: Double): Double;
 begin
-  arg := ParseExpression;
-  if FuncName = 'sin' then Result := Sin(arg)
-  else if FuncName = 'cos' then Result := Cos(arg)
-  else if FuncName = 'tan' then Result := Tan(arg)
-  else if FuncName = 'exp' then Result := Exp(arg)
-  else if FuncName = 'ln' then Result := Ln(arg)
-  else if FuncName = 'sqrt' then Result := Sqrt(arg)
-  else if FuncName = 'abs' then Result := Abs(arg)
-  else raise Exception.Create('Fungsi tidak dikenal: ' + FuncName);
+  if FuncName = 'sin' then
+    Result := Sin(Arg)
+
+  else if FuncName = 'cos' then
+    Result := Cos(Arg)
+
+  else if FuncName = 'tan' then
+    Result := Tan(Arg)
+
+  else if FuncName = 'exp' then
+    Result := Exp(Arg)
+
+  else if FuncName = 'ln' then
+    Result := Ln(Arg)
+
+  else if FuncName = 'sqrt' then
+    Result := Sqrt(Arg)
+
+  else if FuncName = 'abs' then
+    Result := Abs(Arg)
+
+  else
+    raise Exception.Create('Fungsi tidak dikenal: ' + FuncName);
 end;
 
 function TParser.Evaluate: Double;

@@ -164,61 +164,44 @@ var
   i: Integer;
 begin
   metode := cmbMetode.Text;
-  if metode = 'Biseksi' then
+  if (metode = 'Biseksi') or (metode = 'Regula Falsi') then
   begin
-    StringGrid1.ColCount := 8;
-    StringGrid1.Cells[0,0] := 'Iterasi';
+    StringGrid1.ColCount := 9;
+    StringGrid1.Cells[0,0] := 'I';
     StringGrid1.Cells[1,0] := 'A';
     StringGrid1.Cells[2,0] := 'B';
     StringGrid1.Cells[3,0] := 'C';
     StringGrid1.Cells[4,0] := 'f(A)';
     StringGrid1.Cells[5,0] := 'f(B)';
     StringGrid1.Cells[6,0] := 'f(C)';
-    StringGrid1.Cells[7,0] := 'Error';
-    for i := 0 to 7 do StringGrid1.ColWidths[i] := 80;
-    StringGrid1.ColWidths[0] := 60;
-  end
-  else if metode = 'Regula Falsi' then
-  begin
-    StringGrid1.ColCount := 8;
-    StringGrid1.Cells[0,0] := 'Iterasi';
-    StringGrid1.Cells[1,0] := 'A';
-    StringGrid1.Cells[2,0] := 'B';
-    StringGrid1.Cells[3,0] := 'C';
-    StringGrid1.Cells[4,0] := 'f(A)';
-    StringGrid1.Cells[5,0] := 'f(B)';
-    StringGrid1.Cells[6,0] := 'f(C)';
-    StringGrid1.Cells[7,0] := 'Error';
-    for i := 0 to 7 do StringGrid1.ColWidths[i] := 80;
-    StringGrid1.ColWidths[0] := 60;
+    StringGrid1.Cells[7,0] := 'Selang';
+    StringGrid1.Cells[8,0] := 'Error';
+    for i := 0 to 8 do StringGrid1.ColWidths[i] := 200;
+    StringGrid1.ColWidths[0] := 40;
+    StringGrid1.ColWidths[7] := 100;
   end
   else if metode = 'Secant' then
   begin
-    StringGrid1.ColCount := 8;
-    StringGrid1.Cells[0,0] := 'Iterasi';
+    StringGrid1.ColCount := 5;
+    StringGrid1.Cells[0,0] := 'I';
     StringGrid1.Cells[1,0] := 'X0';
     StringGrid1.Cells[2,0] := 'X1';
     StringGrid1.Cells[3,0] := 'X2';
-    StringGrid1.Cells[4,0] := 'f(X0)';
-    StringGrid1.Cells[5,0] := 'f(X1)';
-    StringGrid1.Cells[6,0] := 'f(X2)';
-    StringGrid1.Cells[7,0] := 'Error';
-    for i := 0 to 7 do StringGrid1.ColWidths[i] := 80;
-    StringGrid1.ColWidths[0] := 60;
+    StringGrid1.Cells[4,0] := 'Error';
+    for i := 0 to 4 do StringGrid1.ColWidths[i] := 200;
+    StringGrid1.ColWidths[0] := 40;
   end
   else if metode = 'Newton Raphson' then
   begin
-    StringGrid1.ColCount := 6;
-    StringGrid1.Cells[0,0] := 'Iterasi';
+    StringGrid1.ColCount := 5;
+    StringGrid1.Cells[0,0] := 'I';
     StringGrid1.Cells[1,0] := 'Xn';
     StringGrid1.Cells[2,0] := 'f(Xn)';
-    StringGrid1.Cells[3,0] := 'f''(Xn)';
-    StringGrid1.Cells[4,0] := 'Xn+1';
-    StringGrid1.Cells[5,0] := 'Error';
-    for i := 0 to 5 do StringGrid1.ColWidths[i] := 80;
-    StringGrid1.ColWidths[0] := 60;
+    StringGrid1.Cells[3,0] := 'Xn+1';
+    StringGrid1.Cells[4,0] := 'Error';
+    for i := 0 to 4 do StringGrid1.ColWidths[i] := 200;
+    StringGrid1.ColWidths[0] := 40;
   end;
-
   StringGrid1.FixedRows := 1;
   StringGrid1.RowCount := 2;
   StringGrid1.Refresh;
@@ -228,8 +211,16 @@ end;
 procedure TAplikasi.cmbMetodeChange(Sender: TObject);
 var
   metode: string;
+  i, j: Integer;
 begin
+
+  for i := 0 to StringGrid1.ColCount - 1 do
+    for j := 1 to StringGrid1.RowCount - 1 do
+      StringGrid1.Cells[i, j] := '';
+
   metode := cmbMetode.Text;
+
+
   if (metode = 'Biseksi') or (metode = 'Regula Falsi') then
   begin
     Label4.Caption := 'Batas bawah (A)';
@@ -346,13 +337,17 @@ end;
 // ======================== FORM INIT & CLOSE ========================
 procedure TAplikasi.FormCreate(Sender: TObject);
 begin
-  // Isi preset fungsi
+
+  WindowState := wsMaximized;
+
+
+  // preset fungsi
   cmbFungsi.Items.Clear;
   cmbFungsi.Items.Add('x^2 - 4');
   cmbFungsi.Items.Add('x^3 - x - 2');
   cmbFungsi.Items.Add('exp(x) - 3*x');
   cmbFungsi.Items.Add('sin(x) - 0.5');
-  cmbFungsi.Style := csDropDown; // editable combo
+  cmbFungsi.Style := csDropDown;
   cmbFungsi.Text := 'x^2 - 4';
 
   cmbMetode.Items.Clear;
