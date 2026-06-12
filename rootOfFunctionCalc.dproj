@@ -136,7 +136,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="main_new.pas">
-            <Form>Form2</Form>
+            <Form>Main</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Base">

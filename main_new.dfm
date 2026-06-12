@@ -1,4 +1,4 @@
-object Form1: TForm1
+object Main: TMain
   Left = 0
   Top = 0
   Caption = 'Kalkulator Akar Persamaan Non-Linear'
@@ -100,8 +100,6 @@ object Form1: TForm1
     Height = 317
     Align = alBottom
     TabOrder = 4
-    ExplicitTop = 376
-    ExplicitWidth = 1077
   end
   object gbTertutup: TGroupBox
     Left = 419

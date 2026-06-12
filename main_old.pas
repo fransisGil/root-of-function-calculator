@@ -66,7 +66,7 @@ var
 
 implementation
 
-{$R main.dfm}
+{$R *.dfm}
 
 // ======================== KONVERSI ANGKA ========================
 function StrToDoubleSafe(const S: string; out Value: Double): Boolean;

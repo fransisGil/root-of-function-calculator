@@ -11,14 +11,14 @@ uses
   tree in 'tree.pas',
   stack in 'stack.pas',
   main_old in 'main_old.pas' {Form1},
-  main_new in 'main_new.pas' {Form2};
+  main_new in 'main_new.pas' {Main};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TAplikasi, Aplikasi);
-  Application.CreateForm(TForm2, Form2);
+//  Application.CreateForm(TAplikasi, Aplikasi);
+  Application.CreateForm(TMain, Main);
   Application.Run;
 end.

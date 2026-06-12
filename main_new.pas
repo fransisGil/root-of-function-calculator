@@ -1,13 +1,14 @@
-unit Unit1;
+unit main_new;
 
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Grids;
 
 type
-  TForm1 = class(TForm)
+  TMain = class(TForm)
     rgMetode: TRadioGroup;
     rbTertutup: TRadioButton;
     GroupBox1: TGroupBox;
@@ -40,15 +41,15 @@ type
   end;
 
 var
-  Form1: TForm1;
+  Main: TMain;
 
 implementation
 
 {$R *.dfm}
 
-procedure TForm1.FormActivate(Sender: TObject);
+procedure TMain.FormActivate(Sender: TObject);
 begin
-  edtfungsi.SetFocus;
+  edtFungsi.SetFocus;
 end;
 
 end.
