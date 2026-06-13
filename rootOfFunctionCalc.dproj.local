@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2026/05/12 11:39:54.000.046,=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 11:40:15.000.302,C:\Users\User\Documents\Uni\MN\kelompok1\main.dfm=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>2026/05/12 11:40:15.000.302,C:\Users\User\Documents\Uni\MN\kelompok1\main.pas=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2026/05/12 11:40:41.000.158,C:\Users\User\Documents\Uni\MN\kelompok1\rootOfFunctionCalc.dproj=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>2026/06/11 16:02:17.000.387,=D:\Delphi\root-of-function-calculator\Unit1.pas</Transaction>
-    <Transaction>2026/06/11 16:02:27.000.264,D:\Delphi\root-of-function-calculator\main.dfm=D:\Delphi\root-of-function-calculator\Unit1.dfm</Transaction>
-    <Transaction>2026/06/11 16:02:27.000.264,D:\Delphi\root-of-function-calculator\main.pas=D:\Delphi\root-of-function-calculator\Unit1.pas</Transaction>
-    <Transaction>2026/06/11 16:17:58.000.308,=D:\Delphi\root-of-function-calculator\Unit2.pas</Transaction>
-    <Transaction>2026/06/11 16:20:59.000.855,D:\Delphi\root-of-function-calculator\Unit2.pas=</Transaction>
-    <Transaction>2026/06/11 16:22:49.000.334,D:\Delphi\root-of-function-calculator\main_old.pas=D:\Delphi\root-of-function-calculator\main.pas</Transaction>
-    <Transaction>2026/06/11 16:23:18.000.963,=D:\Delphi\root-of-function-calculator\Unit2.pas</Transaction>
-    <Transaction>2026/06/11 16:23:35.000.852,D:\Delphi\root-of-function-calculator\main_new.dfm=D:\Delphi\root-of-function-calculator\Unit2.dfm</Transaction>
-    <Transaction>2026/06/11 16:23:35.000.852,D:\Delphi\root-of-function-calculator\main_new.pas=D:\Delphi\root-of-function-calculator\Unit2.pas</Transaction>
-    <Transaction>2026/06/12 14:13:39.357,=D:\Delphi\root-of-function-calculator\Unit1.pas</Transaction>
-    <Transaction>2026/06/12 14:17:15.933,D:\Delphi\root-of-function-calculator\main_new.pas=D:\Delphi\root-of-function-calculator\Unit1.pas</Transaction>
-    <Transaction>2026/06/12 14:17:15.933,D:\Delphi\root-of-function-calculator\main_new.dfm=D:\Delphi\root-of-function-calculator\Unit1.dfm</Transaction>
+    <Transaction>2026/05/12 11.39.54.000.046,=C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/12 11.40.15.000.302,C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\User\Documents\Uni\MN\kelompok1\main.dfm</Transaction>
+    <Transaction>2026/05/12 11.40.15.000.302,C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\User\Documents\Uni\MN\kelompok1\main.pas</Transaction>
+    <Transaction>2026/05/12 11.40.41.000.158,C:\Users\User\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\User\Documents\Uni\MN\kelompok1\rootOfFunctionCalc.dproj</Transaction>
+    <Transaction>2026/06/11 16.02.17.000.387,=D:\Delphi\root-of-function-calculator\Unit1.pas</Transaction>
+    <Transaction>2026/06/11 16.02.27.000.264,D:\Delphi\root-of-function-calculator\Unit1.pas=D:\Delphi\root-of-function-calculator\main.pas</Transaction>
+    <Transaction>2026/06/11 16.02.27.000.264,D:\Delphi\root-of-function-calculator\Unit1.dfm=D:\Delphi\root-of-function-calculator\main.dfm</Transaction>
+    <Transaction>2026/06/11 16.17.58.000.308,=D:\Delphi\root-of-function-calculator\Unit2.pas</Transaction>
+    <Transaction>2026/06/11 16.20.59.000.855,D:\Delphi\root-of-function-calculator\Unit2.pas=</Transaction>
+    <Transaction>2026/06/11 16.22.49.000.334,D:\Delphi\root-of-function-calculator\main.pas=D:\Delphi\root-of-function-calculator\main_old.pas</Transaction>
+    <Transaction>2026/06/11 16.23.18.000.963,=D:\Delphi\root-of-function-calculator\Unit2.pas</Transaction>
+    <Transaction>2026/06/11 16.23.35.000.852,D:\Delphi\root-of-function-calculator\Unit2.dfm=D:\Delphi\root-of-function-calculator\main_new.dfm</Transaction>
+    <Transaction>2026/06/11 16.23.35.000.852,D:\Delphi\root-of-function-calculator\Unit2.pas=D:\Delphi\root-of-function-calculator\main_new.pas</Transaction>
+    <Transaction>2026/06/12 14.13.39.000.357,=D:\Delphi\root-of-function-calculator\Unit1.pas</Transaction>
+    <Transaction>2026/06/12 14.17.15.000.933,D:\Delphi\root-of-function-calculator\Unit1.pas=D:\Delphi\root-of-function-calculator\main_new.pas</Transaction>
+    <Transaction>2026/06/12 14.17.15.000.933,D:\Delphi\root-of-function-calculator\Unit1.dfm=D:\Delphi\root-of-function-calculator\main_new.dfm</Transaction>
   </Transactions>
 </BorlandProject>
