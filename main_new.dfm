@@ -10,8 +10,10 @@ object Main: TMain
   Font.Height = -15
   Font.Name = 'Segoe UI'
   Font.Style = []
+  OldCreateOrder = True
   Position = poScreenCenter
   OnActivate = FormActivate
+  PixelsPerInch = 96
   TextHeight = 20
   object rgMetode: TRadioGroup
     Left = 408
@@ -64,7 +66,7 @@ object Main: TMain
     end
     object edtMaksimumIterasi: TEdit
       Left = 142
-      Top = 123
+      Top = 125
       Width = 209
       Height = 28
       NumbersOnly = True
@@ -92,6 +94,7 @@ object Main: TMain
     ParentFont = False
     TabOrder = 3
     WordWrap = True
+    OnClick = btnHitungClick
   end
   object StringGrid1: TStringGrid
     Left = 0
@@ -139,7 +142,7 @@ object Main: TMain
     end
     object edtBatasAtas: TEdit
       Left = 128
-      Top = 87
+      Top = 94
       Width = 121
       Height = 28
       TabOrder = 2
