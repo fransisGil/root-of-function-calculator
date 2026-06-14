@@ -89,13 +89,13 @@ begin
 
     if fa * fc < 0 then
     begin
-      selang := Format('[%g, %g]', [a, c]);
+      selang := '[A, C]';
       b := c;
       fb := fc;
     end
     else
     begin
-      selang := Format('[%g, %g]', [c, b]);
+      selang := '[C, B]';
       a := c;
       fa := fc;
     end;
