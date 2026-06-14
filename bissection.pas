@@ -16,9 +16,9 @@ var
   iter: Integer;
   a_old, b_old, fa_old, fb_old: Double;
   selang: string;
+  error: Double;
 
-  // Prosedur helper dengan urutan parameter: Iterasi, A,B,C, fA,fB,fC, Selang(string), Error(double)
-  procedure WriteRow(iterNum: Integer; A, B, C, FA, FB, FC: Double; const Selang: string; Error: Double);
+  procedure WriteRow(iterNum: Integer; A, B, C, FA, FB, FC: Double; const Selang: string; Err: Double);
   var
     row: Integer;
   begin
@@ -36,13 +36,12 @@ var
     grid.Cells[4, row] := FormatFloat('0.00000000', FA);
     grid.Cells[5, row] := FormatFloat('0.00000000', FB);
     grid.Cells[6, row] := FormatFloat('0.00000000', FC);
-    grid.Cells[7, row] := Selang;   // string
-    grid.Cells[8, row] := FormatFloat('0.00000000', Error);
+    grid.Cells[7, row] := Selang;
+    grid.Cells[8, row] := FormatFloat('0.00000000', Err);
     grid.Refresh;
   end;
 
 begin
-  // Pastikan a < b
   if a > b then
   begin
     c := a; a := b; b := c;
@@ -51,7 +50,6 @@ begin
   fa := EvaluateExpression(funcExpr, a);
   fb := EvaluateExpression(funcExpr, b);
 
-  // Kasus akar tepat di ujung
   if Abs(fa) < toleransi then
   begin
     iterasi := 1;
@@ -79,23 +77,25 @@ begin
     fc := EvaluateExpression(funcExpr, c);
     Inc(iter);
 
-    // Tentukan interval baru dan string selang (label)
+      // Error = setengah panjang interval
+    error := Abs(b_old - a_old) / 2;
+
     if fa * fc < 0 then
     begin
-      selang := '[A,C]';    // label, bukan nilai numerik
+      selang := Format('[%g, %g]', [a, c]);
       b := c;
       fb := fc;
     end
     else
     begin
-      selang := '[C,B]';
+      selang := Format('[%g, %g]', [c, b]);
       a := c;
       fa := fc;
     end;
 
-    WriteRow(iter, a_old, b_old, c, fa_old, fb_old, fc, selang, (b_old - a_old) / 2);
+    WriteRow(iter, a_old, b_old, c, fa_old, fb_old, fc, selang, error);
 
-    if (Abs(fc) < toleransi) or ((b_old - a_old) / 2 < toleransi) then
+    if error <= toleransi then
     begin
       iterasi := iter;
       Result := c;

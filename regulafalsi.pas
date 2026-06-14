@@ -13,11 +13,13 @@ function RegulaFalsiMethodWithGrid(funcExpr: string; a, b, toleransi: Double; ma
   var iterasi: Integer; grid: TStringGrid): Double;
 var
   fa, fb, fc, c: Double;
+  c_old: Double;
   iter: Integer;
   a_old, b_old, fa_old, fb_old: Double;
   selang: string;
+  error: Double;
 
-  procedure WriteRow(iterNum: Integer; A, B, C, FA, FB, FC: Double; const Selang: string; Error: Double);
+  procedure WriteRow(iterNum: Integer; A, B, C, FA, FB, FC: Double; const Selang: string; Err: Double);
   var
     row: Integer;
   begin
@@ -36,7 +38,7 @@ var
     grid.Cells[5, row] := FormatFloat('0.00000000', FB);
     grid.Cells[6, row] := FormatFloat('0.00000000', FC);
     grid.Cells[7, row] := Selang;
-    grid.Cells[8, row] := FormatFloat('0.00000000', Error);
+    grid.Cells[8, row] := FormatFloat('0.00000000', Err);
     grid.Refresh;
   end;
 
@@ -68,35 +70,46 @@ begin
     raise Exception.Create(Format('Interval [%g, %g] tidak mengurung akar (f(a)=%g, f(b)=%g)', [a, b, fa, fb]));
 
   iter := 0;
+  c_old := 0;
   repeat
     a_old := a; b_old := b;
     fa_old := fa; fb_old := fb;
+
+    if Abs(fb - fa) < 1e-12 then
+    raise Exception.Create('Penyebut mendekati nol dalam metode Regula Falsi');
 
     c := (a * fb - b * fa) / (fb - fa);
     fc := EvaluateExpression(funcExpr, c);
     Inc(iter);
 
+    if iter = 1 then
+      error := Abs(b_old - a_old)
+    else
+      error := Abs(c - c_old);
+
     if fa * fc < 0 then
     begin
-      selang := '[A,C]';
+      selang := Format('[%g, %g]', [a, c]);
       b := c;
       fb := fc;
     end
     else
     begin
-      selang := '[C,B]';
+      selang := Format('[%g, %g]', [c, b]);
       a := c;
       fa := fc;
     end;
 
-    WriteRow(iter, a_old, b_old, c, fa_old, fb_old, fc, selang, Abs(c - (a_old + b_old)/2));
+    WriteRow(iter, a_old, b_old, c, fa_old, fb_old, fc, selang, error);
 
-    if Abs(fc) < toleransi then
+    if error <= toleransi then
     begin
       iterasi := iter;
       Result := c;
       Exit;
     end;
+
+    c_old := c;
 
     if iter >= maxIter then
       raise Exception.Create('Iterasi maksimum tercapai tanpa konvergensi');

@@ -10,8 +10,6 @@ uses
 
 type
   TMain = class(TForm)
-    rgMetode: TRadioGroup;
-    rbTertutup: TRadioButton;
     GroupBox1: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
@@ -21,42 +19,35 @@ type
     StringGrid1: TStringGrid;
     gbTertutup: TGroupBox;
     gbTerbuka: TGroupBox;
-    rbTerbuka: TRadioButton;
-    rbBisection: TRadioButton;
-    rbNewton: TRadioButton;
-    rbRegulaFalsi: TRadioButton;
-    rbSecant: TRadioButton;
     Label5: TLabel;
     Label6: TLabel;
-    z: TLabel;
+    lblX0: TLabel;
     edtBatasAtas: TEdit;
     edtBatasBawah: TEdit;
-    edtTebakanAwal: TEdit;
+    edtX0: TEdit;
     Label3: TLabel;
-    edtFungsi: TEdit;
-    procedure FormActivate(Sender: TObject);
-    procedure rbTertutupClick(Sender: TObject);
-    procedure rbTerbukaClick(Sender: TObject);
-    procedure rbBisectionClick(Sender: TObject);
-    procedure rbRegulaFalsiClick(Sender: TObject);
-    procedure rbSecantClick(Sender: TObject);
-    procedure rbNewtonClick(Sender: TObject);
+    lblX1: TLabel;
+    edtX1: TEdit;
+    cmbTertutup: TComboBox;
+    cmbTerbuka: TComboBox;
+    RadioGroup1: TRadioGroup;
+    cmbFungsi: TComboBox;
     procedure btnHitungClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
+    procedure cmbTertutupChange(Sender: TObject);
+    procedure cmbTerbukaChange(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
+    FCurrentMethod: string;
     procedure SetupGridForMethod(metode: string);
     procedure TampilkanHasil(metode, fungsi: string; iterasi: Integer; akar: Double);
     function GetTolerance: Double;
     function GetMaxIterasi: Integer;
     function GetFungsi: string;
-    // Untuk metode tertutup
     function GetBatasBawah: Double;
     function GetBatasAtas: Double;
-    // Untuk Secant
-    function GetX0: Double;
-    function GetX1: Double;
-    // Untuk Newton
-    function GetTebakanAwal: Double;
+    function GetSecantX0: Double;
+    function GetSecantX1: Double;
+    function GetNewtonX0: Double;
     function ValidateClosedInterval(var a, b, fa, fb: Double): Boolean;
     procedure UpdateUIForMethod;
   public
@@ -99,7 +90,7 @@ end;
 
 function TMain.GetFungsi: string;
 begin
-  Result := edtFungsi.Text;
+  Result := cmbFungsi.Text;
   if Result = '' then
     raise Exception.Create('Fungsi tidak boleh kosong');
 end;
@@ -116,20 +107,22 @@ begin
     raise Exception.Create('Batas atas tidak valid: ' + edtBatasAtas.Text);
 end;
 
-function TMain.GetX0: Double;
+function TMain.GetSecantX0: Double;
 begin
-  Result := GetBatasBawah; // untuk Secant, X0 dari batas bawah
+  if not StrToDoubleSafe(edtX0.Text, Result) then
+    raise Exception.Create('X0 tidak valid: ' + edtX0.Text);
 end;
 
-function TMain.GetX1: Double;
+function TMain.GetSecantX1: Double;
 begin
-  Result := GetBatasAtas;  // untuk Secant, X1 dari batas atas
+  if not StrToDoubleSafe(edtX1.Text, Result) then
+    raise Exception.Create('X1 tidak valid: ' + edtX1.Text);
 end;
 
-function TMain.GetTebakanAwal: Double;
+function TMain.GetNewtonX0: Double;
 begin
-  if not StrToDoubleSafe(edtTebakanAwal.Text, Result) then
-    raise Exception.Create('Tebakan awal tidak valid: ' + edtTebakanAwal.Text);
+  if not StrToDoubleSafe(edtX0.Text, Result) then
+    raise Exception.Create('Tebakan awal tidak valid: ' + edtX0.Text);
 end;
 
 // ======================== VALIDASI METODE TERTUTUP ========================
@@ -218,81 +211,80 @@ end;
 
 // ======================== UI LOGIC ========================
 procedure TMain.UpdateUIForMethod;
-var
-  isTertutup: Boolean;
-  isSecant: Boolean;
 begin
-  isTertutup := rbTertutup.Checked;
-  isSecant := rbSecant.Checked;
+  btnHitung.Enabled := False;
 
-  // Tampilkan groupbox sesuai jenis metode
-  gbTertutup.Visible := isTertutup;
-  gbTerbuka.Visible := not isTertutup;
-
-  // Atur label untuk batas bawah/atas
-  if isTertutup then
+  if cmbTertutup.ItemIndex >= 0 then
   begin
-    Label5.Caption := 'Batas Bawah (A)';
-    Label6.Caption := 'Batas Atas (B)';
+    btnHitung.Enabled := True;
+    if cmbTertutup.Text = 'Biseksi' then
+      FCurrentMethod := 'Biseksi'
+    else if cmbTertutup.Text = 'Regula Falsi' then
+      FCurrentMethod := 'Regula Falsi'
+    else
+      FCurrentMethod := '';
+
+    Label5.Caption := 'Batas Atas (B)';
+    Label6.Caption := 'Batas Bawah (A)';
+    Label5.Visible := True;
+    Label6.Visible := True;
+    edtBatasBawah.Visible := True;
+    edtBatasAtas.Visible := True;
+    // Sembunyikan input terbuka
+    edtX0.Visible := False;
+    edtX1.Visible := False;
+    lblX0.Visible := False;
+    lblX1.Visible := False;
+  end
+  else if cmbTerbuka.ItemIndex >= 0 then
+  begin
+    btnHitung.Enabled := True;
+    if cmbTerbuka.Text = 'Secant' then
+    begin
+      FCurrentMethod := 'Secant';
+      lblX0.Visible := True;
+      lblX1.Visible := True;
+      edtX0.Visible := True;
+      edtX1.Visible := True;
+      edtX0.Enabled := True;
+      edtX1.Enabled := True;
+      lblX0.Caption := 'X0';
+      lblX1.Caption := 'X1';
+    end
+    else if cmbTerbuka.Text = 'Newton Raphson' then
+    begin
+      FCurrentMethod := 'Newton Raphson';
+      lblX0.Visible := True;
+      lblX1.Visible := False;
+      edtX0.Visible := True;
+      edtX1.Visible := False;
+      edtX0.Enabled := True;
+      lblX0.Caption := 'Tebakan Awal';
+    end;
+    // Sembunyikan input tertutup
+    edtBatasBawah.Visible := False;
+    edtBatasAtas.Visible := False;
+    Label5.Visible := False;
+    Label6.Visible := False;
   end
   else
   begin
-    if isSecant then
-    begin
-      Label5.Caption := 'X0 (tebakan 1)';
-      Label6.Caption := 'X1 (tebakan 2)';
-    end
-    else
-    begin
-      Label5.Caption := '(tidak dipakai)';
-      Label6.Caption := '(tidak dipakai)';
-    end;
-  end;
-
-  // Untuk Newton, tebakan awal aktif
-  edtTebakanAwal.Enabled := (not isTertutup) and (rbNewton.Checked);
-  // Untuk Secant, kita pakai batas bawah/atas sebagai X0, X1
-  edtBatasBawah.Enabled := isTertutup or isSecant;
-  edtBatasAtas.Enabled := isTertutup or isSecant;
-  // Jika bukan tertutup dan bukan Secant (yaitu Newton), nonaktifkan batas
-  if not isTertutup and not isSecant then
-  begin
-    edtBatasBawah.Enabled := False;
-    edtBatasAtas.Enabled := False;
+    FCurrentMethod := '';
+    btnHitung.Enabled := False;
   end;
 end;
 
-procedure TMain.rbTertutupClick(Sender: TObject);
+procedure TMain.cmbTertutupChange(Sender: TObject);
 begin
+  if cmbTertutup.ItemIndex >= 0 then
+    cmbTerbuka.ItemIndex := -1;
   UpdateUIForMethod;
 end;
 
-procedure TMain.rbTerbukaClick(Sender: TObject);
+procedure TMain.cmbTerbukaChange(Sender: TObject);
 begin
-  UpdateUIForMethod;
-end;
-
-procedure TMain.rbBisectionClick(Sender: TObject);
-begin
-  rbTertutup.Checked := True;
-  UpdateUIForMethod;
-end;
-
-procedure TMain.rbRegulaFalsiClick(Sender: TObject);
-begin
-  rbTertutup.Checked := True;
-  UpdateUIForMethod;
-end;
-
-procedure TMain.rbSecantClick(Sender: TObject);
-begin
-  rbTerbuka.Checked := True;
-  UpdateUIForMethod;
-end;
-
-procedure TMain.rbNewtonClick(Sender: TObject);
-begin
-  rbTerbuka.Checked := True;
+  if cmbTerbuka.ItemIndex >= 0 then
+    cmbTertutup.ItemIndex := -1;
   UpdateUIForMethod;
 end;
 
@@ -308,23 +300,14 @@ var
   langsungAkar: Boolean;
 begin
   try
-    // Tentukan metode berdasarkan radio button yang dipilih
-    if rbBisection.Checked then
-      metode := 'Biseksi'
-    else if rbRegulaFalsi.Checked then
-      metode := 'Regula Falsi'
-    else if rbSecant.Checked then
-      metode := 'Secant'
-    else if rbNewton.Checked then
-      metode := 'Newton Raphson'
-    else
-      raise Exception.Create('Pilih metode terlebih dahulu');
+    if FCurrentMethod = '' then
+      raise Exception.Create('Pilih metode terlebih dahulu (dari combobox tertutup atau terbuka)');
 
+    metode := FCurrentMethod;
     fungsi := GetFungsi;
     tol := GetTolerance;
     maxIter := GetMaxIterasi;
 
-    // Setup grid header
     SetupGridForMethod(metode);
 
     // Validasi awal fungsi (coba evaluasi di x=0 untuk deteksi error)
@@ -335,7 +318,6 @@ begin
         raise Exception.Create('Fungsi tidak valid: ' + E.Message);
     end;
 
-    // ========== METODE TERTUTUP ==========
     if (metode = 'Biseksi') or (metode = 'Regula Falsi') then
     begin
       langsungAkar := ValidateClosedInterval(a, b, fa, fb);
@@ -381,20 +363,18 @@ begin
         akar := RegulaFalsiMethodWithGrid(fungsi, a, b, tol, maxIter, iterasi, StringGrid1);
       TampilkanHasil(metode, fungsi, iterasi, akar);
     end
-    // ========== METODE SECANT ==========
     else if metode = 'Secant' then
     begin
-      x0 := GetX0;
-      x1 := GetX1;
+      x0 := GetSecantX0;
+      x1 := GetSecantX1;
       if x0 = x1 then
         raise Exception.Create('X0 dan X1 tidak boleh sama');
       akar := SecantMethodWithGrid(fungsi, x0, x1, tol, maxIter, iterasi, StringGrid1);
       TampilkanHasil(metode, fungsi, iterasi, akar);
     end
-    // ========== METODE NEWTON-RAPHSON ==========
     else if metode = 'Newton Raphson' then
     begin
-      tebakan := GetTebakanAwal;
+      tebakan := GetNewtonX0;
       akar := NewtonRaphsonMethodWithGrid(fungsi, tebakan, tol, maxIter, iterasi, StringGrid1);
       TampilkanHasil(metode, fungsi, iterasi, akar);
     end;
@@ -404,25 +384,48 @@ begin
   end;
 end;
 
-// ======================== FORM INIT ========================
-procedure TMain.FormCreate(Sender: TObject);
-begin
-  // Inisialisasi nilai default
-  edtError.Text := '0.00001';
-  edtMaksimumIterasi.Text := '100';
-  edtFungsi.Text := 'x^2 - 4';
-  edtBatasBawah.Text := '0';
-  edtBatasAtas.Text := '2';
-  edtTebakanAwal.Text := '1';
-
-  // Atur UI awal
-  rbBisection.Checked := True;
-  UpdateUIForMethod;
-end;
-
+// ======================== FORM INIT & ACTIVATE ========================
 procedure TMain.FormActivate(Sender: TObject);
 begin
-  edtFungsi.SetFocus;
+  cmbFungsi.SetFocus;
+
+  // Isi combo fungsi dengan preset
+  cmbFungsi.Items.Clear;
+  cmbFungsi.Items.Add('x^2 - 4');
+  cmbFungsi.Items.Add('x^3 - x - 2');
+  cmbFungsi.Items.Add('exp(-x) - x^2');
+  cmbFungsi.Items.Add('sin(x) - 0.5');
+  cmbFungsi.Style := csDropDown;
+
+  // Isi combobox tertutup dan terbuka
+  cmbTertutup.Items.Clear;
+  cmbTertutup.Items.Add('Biseksi');
+  cmbTertutup.Items.Add('Regula Falsi');
+  cmbTertutup.ItemIndex := -1;
+
+  cmbTerbuka.Items.Clear;
+  cmbTerbuka.Items.Add('Secant');
+  cmbTerbuka.Items.Add('Newton Raphson');
+  cmbTerbuka.ItemIndex := -1;
+
+  // Nilai default
+  edtError.Text := '0.000005';
+  edtMaksimumIterasi.Text := '100';
+  edtBatasBawah.Text := '0';
+  edtBatasAtas.Text := '1';
+  edtX0.Text := '1';
+  edtX1.Text := '2';
+
+  // Sembunyikan semua input (akan diatur oleh UpdateUI)
+  edtBatasBawah.Visible := False;
+  edtBatasAtas.Visible := False;
+  edtX0.Visible := False;
+  edtX1.Visible := False;
+  lblX0.Visible := False;
+  lblX1.Visible := False;
+  Label5.Visible := False;
+  Label6.Visible := False;
+  btnHitung.Enabled := False;
 end;
 
 end.

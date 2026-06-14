@@ -21,6 +21,7 @@ function NewtonRaphsonMethodWithGrid(funcExpr: string; tebakanAwal, toleransi: D
 var
   x, xn, fx, fpx: Double;
   iter: Integer;
+  error: Double;
 
   procedure WriteRow(iterNum: Integer; xnVal, fxn, xnp1, err: Double);
   var
@@ -51,13 +52,17 @@ begin
       raise Exception.Create('Turunan mendekati nol, metode Newton gagal');
     xn := x - fx / fpx;
     Inc(iter);
-    WriteRow(iter, x, fx, xn, Abs(xn - x));
-    if Abs(EvaluateExpression(funcExpr, xn)) < toleransi then
+
+    error := Abs(xn - x);
+    WriteRow(iter, x, fx, xn, error);
+
+    if error <= toleransi then
     begin
       iterasi := iter;
       Result := xn;
       Exit;
     end;
+
     x := xn;
     if iter >= maxIter then
       raise Exception.Create('Iterasi maksimum tercapai tanpa konvergensi');
