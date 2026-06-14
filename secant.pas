@@ -14,6 +14,7 @@ function SecantMethodWithGrid(funcExpr: string; x0, x1, toleransi: Double; maxIt
 var
   f0, f1, x2, f2: Double;
   iter: Integer;
+  error: Double;
 
   procedure WriteRow(iterNum: Integer; v0, v1, v2, err: Double);
   var
@@ -46,9 +47,10 @@ begin
     f2 := EvaluateExpression(funcExpr, x2);
     Inc(iter);
 
-    WriteRow(iter, x0, x1, x2, Abs(x2 - x1));
+    error := Abs(x2 - x1);
+    WriteRow(iter, x0, x1, x2, error);
 
-    if Abs(f2) < toleransi then
+    if error <= toleransi then
     begin
       iterasi := iter;
       Result := x2;
